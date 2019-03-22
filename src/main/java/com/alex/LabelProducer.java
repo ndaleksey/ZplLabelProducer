@@ -6,11 +6,10 @@ import freemarker.template.TemplateExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.nio.file.Path;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class LabelProducer {
     private static final Configuration cfg;
@@ -26,7 +25,6 @@ public class LabelProducer {
     }
 
     public static void main(String[] args) {
-
         try {
             if (args.length < 2)
                 throw new Exception("Ошибка ввода параметров этикетки: должно быть два параметра (ШК " +
@@ -35,12 +33,12 @@ public class LabelProducer {
             Map<String, String> data = new HashMap<>();
             data.put("code", args[0]);
             data.put("title", args[1]);
-            try (FileWriter writer = new FileWriter(new File("barcode.zpl"))) {
+            try (FileWriter writer = new FileWriter(new File("label.zpl"))) {
                 template.process(data, writer);
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }
-        LOGGER.info("Шаблон успешно создан");
+        LOGGER.info("Шаблон успешно создан (label.zpl)");
     }
 }
